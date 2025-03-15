@@ -1,4 +1,3 @@
-// script.js
 document.getElementById("openMessenger").addEventListener("click", function() {
-    window.location.href = "fb-messenger://user-thread/100011166947174";
+    window.location.href = "fb://messaging/100011166947174";
 });
