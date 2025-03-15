@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MA ANO ULAM?</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Open Messenger</title>
 </head>
 <body>
 
-    <button id="openMessenger">MA ANO ULAM?</button>
+    <a id="messengerLink" href="fb://profile/100011166947174">OMCM</a>
 
-    <script src="script.js"></script>
+    <script>
+        window.location.href = "fb://profile/100011166947174";
+        setTimeout(() => {
+            window.location.href = "https://m.me/danter.gaza.1"; // Fallback if app doesn't open
+        }, 2000);
+    </script>
+
 </body>
 </html>
