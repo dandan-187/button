@@ -17,3 +17,13 @@ button {
 button:hover {
     background-color: #005bb5;
 }
+
+a {
+    font-size: 18px;
+    color: #0084ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
