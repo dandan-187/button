@@ -1,11 +1,13 @@
 document.getElementById("openMessenger").addEventListener("click", function() {
     const userId = "100011166947174";
-    
-    // Open Messenger App on Mobile
-    window.location.href = "fb-messenger://user-thread/" + userId;
+    const appLink = "fb-messenger://user-thread/" + userId;
+    const webLink = "https://www.messenger.com/t/" + userId;
 
-    // Fallback: Open Messenger in browser if the app is not installed
+    // Try opening Messenger app
+    window.location.href = appLink;
+
+    // Fallback: Open Messenger in browser after 1.5 seconds
     setTimeout(() => {
-        window.location.href = "https://www.messenger.com/t/" + userId;
+        window.location.href = webLink;
     }, 1500);
 });
