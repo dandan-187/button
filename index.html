@@ -1,360 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquidation Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liquidation Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
 
-        .container {
-            width: 70%;
-            margin: auto;
-        }
+    .container {
+      width: 70%;
+      margin: auto;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        table, th, td {
-            border: 1px solid black;
-        }
+    table, th, td {
+      border: 1px solid black;
+    }
 
-        th, td {
-            padding: 8px;
-            text-align: center;
-        }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      height: 60px;
+      vertical-align: middle;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th {
+      background-color: #f2f2f2;
+    }
 
-        .total-section {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
+    td:last-child {
+      width: 160px;
+    }
 
-        .total-section span {
-            font-weight: bold;
-        }
+    .total-section {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        button {
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    .total-section span {
+      font-weight: bold;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
 
-        input[type="number"] {
-            width: 80px;
-            padding: 5px;
-            text-align: right;
-        }
+    button:hover {
+      background-color: #45a049;
+    }
 
-        .upload-btn {
-            padding: 5px 10px;
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    input[type="number"] {
+      width: 80px;
+      padding: 5px;
+      text-align: right;
+    }
 
-        .upload-btn:hover {
-            background-color: #f57c00;
-        }
+    .upload-btn {
+      padding: 5px 10px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
 
-        .check-mark {
-            display: none;
-            color: green;
-            font-size: 18px;
-        }
+    .upload-btn:hover {
+      background-color: #f57c00;
+    }
 
-        .uploaded-info {
-            display: none;
-            margin-top: 10px;
-        }
+    .check-mark {
+      display: none;
+      color: green;
+      font-size: 18px;
+    }
 
-        .uploaded-info img {
-            max-width: 150px;
-            margin-top: 10px;
-        }
+    .uploaded-info {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+    }
 
-        input[type="file"] {
-            display: none;
-        }
+    .uploaded-info img {
+      display: none !important;
+    }
 
-        .done-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
+    input[type="file"] {
+      display: none;
+    }
 
-        .done-btn:hover {
-            background-color: #45a049;
-        }
+    .green-bg {
+      background-color: #4CAF50 !important;
+      color: white;
+    }
 
-        .green-bg {
-            background-color: #d4edda;
-        }
+    .fullscreen-img {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      flex-direction: column;
+    }
 
-        /* Full-Screen Image */
-        .fullscreen-img {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
+    .fullscreen-img img {
+      max-width: 90%;
+      max-height: 80%;
+      margin-bottom: 20px;
+    }
 
-        .fullscreen-img img {
-            max-width: 90%;
-            max-height: 90%;
-        }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-        }
+    .close-btn:hover {
+      background-color: #cc0000;
+    }
 
-        .close-btn:hover {
-            background-color: #cc0000;
-        }
+    .fullscreen-controls {
+      display: flex;
+      gap: 10px;
+    }
 
-        .fullscreen-img div {
-            margin-top: 10px;
-        }
+    .fullscreen-controls button {
+      background-color: #2196F3;
+    }
 
-    </style>
+    .fullscreen-controls button:hover {
+      background-color: #1976D2;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Liquidation Form</h2>
+<div class="container">
+  <h2>Liquidation Form</h2>
 
-        <form id="liquidationForm">
-            <table id="travelTable">
-                <thead>
-                    <tr>
-                        <th>FROM</th>
-                        <th>TO</th>
-                        <th>MOD</th>
-                        <th>AMOUNT</th>
-                        <th>ACTION</th>
-                        <th>UPLOAD TICKET</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="from[]" required></td>
-                        <td><input type="text" name="to[]" required></td>
-                        <td><input type="text" name="mod[]" required></td>
-                        <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
-                        <td><button type="button" onclick="addRow()">+</button></td>
-                        <td>
-                            <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
-                            <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
-                            <span class="check-mark">&#10003;</span>
-                            <div class="uploaded-info">
-                                <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
-                                <div class="image-container">
-                                    <img src="" alt="Uploaded Ticket" class="uploaded-img">
-                                    <br>
-                                    <button type="button" onclick="deleteImage(this)">Delete</button>
-                                    <button type="button" onclick="triggerUpload(this)">Upload New</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="total-section">
-                <span>TRAVEL: <span id="totalTravel">0</span></span>
-                <span>MEAL: <input type="number" id="mealAllowance" value="0" onchange="calculateTotal()"></span>
-                <span>TOTAL: <span id="overallTotal">0</span></span>
+  <form id="liquidationForm">
+    <table id="travelTable">
+      <thead>
+        <tr>
+          <th>FROM</th>
+          <th>TO</th>
+          <th>MOD</th>
+          <th>AMOUNT</th>
+          <th>ACTION</th>
+          <th>UPLOAD TICKET</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="from[]" required></td>
+          <td><input type="text" name="to[]" required></td>
+          <td><input type="text" name="mod[]" required></td>
+          <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
+          <td><button type="button" onclick="addRow()">+</button></td>
+          <td>
+            <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
+            <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
+            <span class="check-mark">&#10003;</span>
+            <div class="uploaded-info">
+              <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+              <img src="" alt="Uploaded Ticket" class="uploaded-img">
             </div>
-        </form>
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <!-- Full Screen Image Viewer -->
-    <div class="fullscreen-img" id="fullscreenImg">
-        <button class="close-btn" onclick="closeFullScreen()">X</button>
-        <img src="" alt="Fullscreen Image" id="fullscreenImage">
-        <div>
-            <button type="button" onclick="uploadNewImage()">Upload New</button>
-            <button type="button" onclick="deleteFullScreenImage()">Delete</button>
+    <div class="total-section">
+      <span>TRAVEL: <span id="totalTravel">0</span></span>
+      <span>MEAL: <input type="number" id="mealAllowance" value="0" onchange="calculateTotal()"></span>
+      <span>TOTAL: <span id="overallTotal">0</span></span>
+    </div>
+  </form>
+</div>
+
+<div class="fullscreen-img" id="fullscreenImg">
+  <button class="close-btn" onclick="closeFullScreen()">X</button>
+  <img src="" alt="Fullscreen Image" id="fullscreenImage">
+  <div class="fullscreen-controls">
+    <button onclick="deleteImage(fullscreenImage.dataset.ref)">Delete</button>
+    <button onclick="triggerUploadFromFullscreen()">Upload New</button>
+  </div>
+</div>
+
+<script>
+  function addRow() {
+    const table = document.getElementById("travelTable").getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+
+    newRow.innerHTML = `
+      <td><input type="text" name="from[]" required></td>
+      <td><input type="text" name="to[]" required></td>
+      <td><input type="text" name="mod[]" required></td>
+      <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
+      <td><button type="button" onclick="removeRow(this)">-</button></td>
+      <td>
+        <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
+        <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
+        <span class="check-mark">&#10003;</span>
+        <div class="uploaded-info">
+          <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+          <img src="" alt="Uploaded Ticket" class="uploaded-img">
         </div>
-    </div>
+      </td>
+    `;
+  }
 
-    <script>
-        // Add a new row to the travel table
-        function addRow() {
-            const table = document.getElementById("travelTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
+  function removeRow(button) {
+    const row = button.closest("tr");
+    row.remove();
+    calculateTotal();
+  }
 
-            newRow.innerHTML = `
-                <td><input type="text" name="from[]" required></td>
-                <td><input type="text" name="to[]" required></td>
-                <td><input type="text" name="mod[]" required></td>
-                <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
-                <td><button type="button" onclick="removeRow(this)">-</button></td>
-                <td>
-                    <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
-                    <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
-                    <span class="check-mark">&#10003;</span>
-                    <div class="uploaded-info">
-                        <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
-                        <div class="image-container">
-                            <img src="" alt="Uploaded Ticket" class="uploaded-img">
-                            <br>
-                            <button type="button" onclick="deleteImage(this)">Delete</button>
-                            <button type="button" onclick="triggerUpload(this)">Upload New</button>
-                        </div>
-                    </div>
-                </td>
-            `;
-        }
+  function triggerUpload(button) {
+    const fileInput = button.nextElementSibling;
+    fileInput.click();
+  }
 
-        // Remove a row from the table
-        function removeRow(button) {
-            const row = button.closest("tr");
-            row.remove();
-            calculateTotal(); // Recalculate totals after removing a row
-        }
+  function handleFileUpload(input) {
+    const row = input.closest("tr");
+    const checkMark = row.querySelector(".check-mark");
+    const uploadedInfo = row.querySelector(".uploaded-info");
+    const uploadedImg = row.querySelector(".uploaded-img");
+    const uploadBtn = row.querySelector(".upload-btn");
 
-        // Trigger file input for image upload
-        function triggerUpload(button) {
-            const fileInput = button.nextElementSibling; // Find the hidden file input
-            fileInput.click();
-        }
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      uploadedImg.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
 
-        // Handle file upload and show the green check mark
-        function handleFileUpload(input) {
-            const row = input.closest("tr");
-            const checkMark = row.querySelector(".check-mark");
-            const uploadedInfo = row.querySelector(".uploaded-info");
-            const uploadedImg = row.querySelector(".uploaded-img");
+    checkMark.style.display = 'inline';
+    uploadedInfo.style.display = 'flex';
+    uploadBtn.classList.add("green-bg");
+    uploadBtn.innerText = "Done!";
+  }
 
-            // Show check mark and change button text to "Done!"
-            checkMark.style.display = 'inline';
-            uploadedInfo.style.display = 'block'; // Show the uploaded information
-            const file = input.files[0];
-            
-            // Display the uploaded image as a thumbnail (optional)
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImg.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+  let currentImageRef = null;
 
-            // Change the button background to green and text to "Done!"
-            const button = row.querySelector(".upload-btn");
-            button.classList.add("green-bg");
-            button.innerText = "Done!";
-        }
+  function showFullScreen(button) {
+    const row = button.closest("tr");
+    const uploadedImg = row.querySelector(".uploaded-img");
 
-        // Show full-screen image when clicked "Done"
-        function showFullScreen(button) {
-            const row = button.closest("tr");
-            const uploadedImg = row.querySelector(".uploaded-img");
+    const fullscreenImg = document.getElementById("fullscreenImg");
+    const fullscreenImage = document.getElementById("fullscreenImage");
 
-            const fullscreenImg = document.getElementById("fullscreenImg");
-            const fullscreenImage = document.getElementById("fullscreenImage");
+    fullscreenImage.src = uploadedImg.src;
+    fullscreenImage.dataset.ref = uploadedImg;
 
-            fullscreenImg.style.display = "flex";
-            fullscreenImage.src = uploadedImg.src;
-        }
+    currentImageRef = uploadedImg;
+    fullscreenImg.style.display = "flex";
+  }
 
-        // Close full-screen image view
-        function closeFullScreen() {
-            const fullscreenImg = document.getElementById("fullscreenImg");
-            fullscreenImg.style.display = "none";
-        }
+  function closeFullScreen() {
+    const fullscreenImg = document.getElementById("fullscreenImg");
+    fullscreenImg.style.display = "none";
+  }
 
-        // Delete the uploaded image from the row
-        function deleteImage(button) {
-            const row = button.closest("tr");
-            const checkMark = row.querySelector(".check-mark");
-            const uploadedInfo = row.querySelector(".uploaded-info");
-            const uploadedImg = row.querySelector(".uploaded-img");
-            const uploadBtn = row.querySelector(".upload-btn");
+  function deleteImage() {
+    if (!currentImageRef) return;
 
-            // Reset the upload button and check mark
-            uploadedInfo.style.display = 'none';
-            checkMark.style.display = 'none';
-            uploadedImg.src = "";
-            uploadBtn.classList.remove("green-bg");
-            uploadBtn.innerText = "Upload Ticket";
-        }
+    const row = currentImageRef.closest("tr");
+    const checkMark = row.querySelector(".check-mark");
+    const uploadedInfo = row.querySelector(".uploaded-info");
+    const uploadBtn = row.querySelector(".upload-btn");
+    const fileInput = row.querySelector(".file-input");
 
-        // Delete image from full-screen view
-        function deleteFullScreenImage() {
-            const fullscreenImg = document.getElementById("fullscreenImg");
-            const fullscreenImage = document.getElementById("fullscreenImage");
+    uploadedInfo.style.display = 'none';
+    checkMark.style.display = 'none';
+    currentImageRef.src = "";
+    uploadBtn.classList.remove("green-bg");
+    uploadBtn.innerText = "Upload Ticket";
+    fileInput.value = "";
 
-            fullscreenImage.src = "";
-            fullscreenImg.style.display = "none"; // Hide full-screen view
-        }
+    closeFullScreen();
+  }
 
-        // Upload new image in full-screen view
-        function uploadNewImage() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.click();
+  function triggerUploadFromFullscreen() {
+    if (!currentImageRef) return;
 
-            input.addEventListener('change', function() {
-                if (input.files.length > 0) {
-                    const file = input.files[0];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById("fullscreenImage").src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
+    const row = currentImageRef.closest("tr");
+    const fileInput = row.querySelector(".file-input");
+    fileInput.click();
+  }
 
-        // Calculate total travel and meal allowance
-        function calculateTotal() {
-            let totalTravel = 0;
-            const amounts = document.querySelectorAll(".amount");
+  function calculateTotal() {
+    let totalTravel = 0;
+    const amounts = document.querySelectorAll(".amount");
+    amounts.forEach(amount => {
+      totalTravel += parseFloat(amount.value) || 0;
+    });
+    const mealAllowance = parseFloat(document.getElementById("mealAllowance").value) || 0;
+    const overallTotal = totalTravel + mealAllowance;
 
-            // Sum up the travel amounts
-            amounts.forEach(amount => {
-                totalTravel += parseFloat(amount.value) || 0; // Ensure non-numeric values don't cause errors
-            });
-
-            // Get meal allowance and calculate the overall total
-            const mealAllowance = parseFloat(document.getElementById("mealAllowance").value) || 0;
-            const overallTotal = totalTravel + mealAllowance;
-
-            // Update the totals on the page
-            document.getElementById("totalTravel").innerText = totalTravel;
-            document.getElementById("overallTotal").innerText = overallTotal;
-        }
-    </script>
+    document.getElementById("totalTravel").innerText = totalTravel;
+    document.getElementById("overallTotal").innerText = overallTotal;
+  }
+</script>
 
 </body>
 </html>
