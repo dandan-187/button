@@ -79,8 +79,70 @@
             font-size: 18px;
         }
 
+        .uploaded-info {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .uploaded-info img {
+            max-width: 150px;
+            margin-top: 10px;
+        }
+
         input[type="file"] {
             display: none;
+        }
+
+        .done-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .done-btn:hover {
+            background-color: #45a049;
+        }
+
+        .green-bg {
+            background-color: #d4edda;
+        }
+
+        /* Full-Screen Image */
+        .fullscreen-img {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .fullscreen-img img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .close-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .fullscreen-img div {
+            margin-top: 10px;
         }
 
     </style>
@@ -113,6 +175,15 @@
                             <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
                             <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
                             <span class="check-mark">&#10003;</span>
+                            <div class="uploaded-info">
+                                <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+                                <div class="image-container">
+                                    <img src="" alt="Uploaded Ticket" class="uploaded-img">
+                                    <br>
+                                    <button type="button" onclick="deleteImage(this)">Delete</button>
+                                    <button type="button" onclick="triggerUpload(this)">Upload New</button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -124,6 +195,16 @@
                 <span>TOTAL: <span id="overallTotal">0</span></span>
             </div>
         </form>
+    </div>
+
+    <!-- Full Screen Image Viewer -->
+    <div class="fullscreen-img" id="fullscreenImg">
+        <button class="close-btn" onclick="closeFullScreen()">X</button>
+        <img src="" alt="Fullscreen Image" id="fullscreenImage">
+        <div>
+            <button type="button" onclick="uploadNewImage()">Upload New</button>
+            <button type="button" onclick="deleteFullScreenImage()">Delete</button>
+        </div>
     </div>
 
     <script>
@@ -142,6 +223,15 @@
                     <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
                     <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
                     <span class="check-mark">&#10003;</span>
+                    <div class="uploaded-info">
+                        <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+                        <div class="image-container">
+                            <img src="" alt="Uploaded Ticket" class="uploaded-img">
+                            <br>
+                            <button type="button" onclick="deleteImage(this)">Delete</button>
+                            <button type="button" onclick="triggerUpload(this)">Upload New</button>
+                        </div>
+                    </div>
                 </td>
             `;
         }
@@ -161,16 +251,96 @@
 
         // Handle file upload and show the green check mark
         function handleFileUpload(input) {
-            const checkMark = input.nextElementSibling; // Find the check mark
-            checkMark.style.display = 'inline'; // Show the check mark
-            calculateTotal(); // Recalculate totals
+            const row = input.closest("tr");
+            const checkMark = row.querySelector(".check-mark");
+            const uploadedInfo = row.querySelector(".uploaded-info");
+            const uploadedImg = row.querySelector(".uploaded-img");
+
+            // Show check mark and change button text to "Done!"
+            checkMark.style.display = 'inline';
+            uploadedInfo.style.display = 'block'; // Show the uploaded information
+            const file = input.files[0];
+            
+            // Display the uploaded image as a thumbnail (optional)
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Change the button background to green and text to "Done!"
+            const button = row.querySelector(".upload-btn");
+            button.classList.add("green-bg");
+            button.innerText = "Done!";
+        }
+
+        // Show full-screen image when clicked "Done"
+        function showFullScreen(button) {
+            const row = button.closest("tr");
+            const uploadedImg = row.querySelector(".uploaded-img");
+
+            const fullscreenImg = document.getElementById("fullscreenImg");
+            const fullscreenImage = document.getElementById("fullscreenImage");
+
+            fullscreenImg.style.display = "flex";
+            fullscreenImage.src = uploadedImg.src;
+        }
+
+        // Close full-screen image view
+        function closeFullScreen() {
+            const fullscreenImg = document.getElementById("fullscreenImg");
+            fullscreenImg.style.display = "none";
+        }
+
+        // Delete the uploaded image from the row
+        function deleteImage(button) {
+            const row = button.closest("tr");
+            const checkMark = row.querySelector(".check-mark");
+            const uploadedInfo = row.querySelector(".uploaded-info");
+            const uploadedImg = row.querySelector(".uploaded-img");
+            const uploadBtn = row.querySelector(".upload-btn");
+
+            // Reset the upload button and check mark
+            uploadedInfo.style.display = 'none';
+            checkMark.style.display = 'none';
+            uploadedImg.src = "";
+            uploadBtn.classList.remove("green-bg");
+            uploadBtn.innerText = "Upload Ticket";
+        }
+
+        // Delete image from full-screen view
+        function deleteFullScreenImage() {
+            const fullscreenImg = document.getElementById("fullscreenImg");
+            const fullscreenImage = document.getElementById("fullscreenImage");
+
+            fullscreenImage.src = "";
+            fullscreenImg.style.display = "none"; // Hide full-screen view
+        }
+
+        // Upload new image in full-screen view
+        function uploadNewImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.click();
+
+            input.addEventListener('change', function() {
+                if (input.files.length > 0) {
+                    const file = input.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("fullscreenImage").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         }
 
         // Calculate total travel and meal allowance
         function calculateTotal() {
             let totalTravel = 0;
             const amounts = document.querySelectorAll(".amount");
-            
+
             // Sum up the travel amounts
             amounts.forEach(amount => {
                 totalTravel += parseFloat(amount.value) || 0; // Ensure non-numeric values don't cause errors
