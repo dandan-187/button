@@ -3,16 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Messenger</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Liquidation Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            width: 70%;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .total-section span {
+            font-weight: bold;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 5px;
+            text-align: right;
+        }
+
+        .upload-btn {
+            padding: 5px 10px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background-color: #f57c00;
+        }
+
+        .check-mark {
+            display: none;
+            color: green;
+            font-size: 18px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-    <button id="openMessenger">Open Messenger</button>
-    <script src="script.js"></script>
+
+    <div class="container">
+        <h2>Liquidation Form</h2>
+
+        <form id="liquidationForm">
+            <table id="travelTable">
+                <thead>
+                    <tr>
+                        <th>FROM</th>
+                        <th>TO</th>
+                        <th>MOD</th>
+                        <th>AMOUNT</th>
+                        <th>ACTION</th>
+                        <th>UPLOAD TICKET</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="from[]" required></td>
+                        <td><input type="text" name="to[]" required></td>
+                        <td><input type="text" name="mod[]" required></td>
+                        <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
+                        <td><button type="button" onclick="addRow()">+</button></td>
+                        <td>
+                            <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
+                            <span class="check-mark">&#10003;</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="total-section">
+                <span>TRAVEL: <span id="totalTravel">0</span></span>
+                <span>MEAL: <input type="number" id="mealAllowance" value="0" onchange="calculateTotal()"></span>
+                <span>TOTAL: <span id="overallTotal">0</span></span>
+            </div>
+        </form>
+    </div>
+
     <script>
-        document.getElementById("openMessenger").addEventListener("click", function() {
-            window.location.href = "https://www.messenger.com/t/ahsey.embile";
-        });
+        // Add a new row to the travel table
+        function addRow() {
+            const table = document.getElementById("travelTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td><input type="text" name="from[]" required></td>
+                <td><input type="text" name="to[]" required></td>
+                <td><input type="text" name="mod[]" required></td>
+                <td><input type="number" name="amount[]" class="amount" required onchange="calculateTotal()"></td>
+                <td><button type="button" onclick="removeRow(this)">-</button></td>
+                <td>
+                    <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
+                    <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
+                    <span class="check-mark">&#10003;</span>
+                </td>
+            `;
+        }
+
+        // Remove a row from the table
+        function removeRow(button) {
+            const row = button.closest("tr");
+            row.remove();
+            calculateTotal(); // Recalculate totals after removing a row
+        }
+
+        // Trigger file input for image upload
+        function triggerUpload(button) {
+            const fileInput = button.nextElementSibling; // Find the hidden file input
+            fileInput.click();
+        }
+
+        // Handle file upload and show the green check mark
+        function handleFileUpload(input) {
+            const checkMark = input.nextElementSibling; // Find the check mark
+            checkMark.style.display = 'inline'; // Show the check mark
+            calculateTotal(); // Recalculate totals
+        }
+
+        // Calculate total travel and meal allowance
+        function calculateTotal() {
+            let totalTravel = 0;
+            const amounts = document.querySelectorAll(".amount");
+            
+            // Sum up the travel amounts
+            amounts.forEach(amount => {
+                totalTravel += parseFloat(amount.value) || 0; // Ensure non-numeric values don't cause errors
+            });
+
+            // Get meal allowance and calculate the overall total
+            const mealAllowance = parseFloat(document.getElementById("mealAllowance").value) || 0;
+            const overallTotal = totalTravel + mealAllowance;
+
+            // Update the totals on the page
+            document.getElementById("totalTravel").innerText = totalTravel;
+            document.getElementById("overallTotal").innerText = overallTotal;
+        }
     </script>
+
 </body>
 </html>
