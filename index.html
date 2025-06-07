@@ -26,8 +26,39 @@
       font-size: 36px;
       color: #2c3e50;
       letter-spacing: 2px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       text-transform: uppercase;
+    }
+
+    .info-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .info-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-item label {
+      font-size: 14px;
+      color: #34495e;
+      margin-bottom: 4px;
+    }
+
+    .info-item input {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 180px;
     }
 
     table {
@@ -175,6 +206,36 @@
 
 <div class="container">
   <h2>SYSTECH LIQUIDATION SYSTEM</h2>
+
+  <div class="info-section">
+    <div class="info-item">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name">
+    </div>
+    <div class="info-item">
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date">
+    </div>
+  </div>
+
+  <div class="info-group">
+    <div class="info-item">
+      <label for="branch">Branch/Project:</label>
+      <input type="text" id="branch" name="branch">
+    </div>
+    <div class="info-item">
+      <label for="jo">JO Number:</label>
+      <input type="text" id="jo" name="jo">
+    </div>
+    <div class="info-item">
+      <label for="timein">Time In:</label>
+      <input type="time" id="timein" name="timein">
+    </div>
+    <div class="info-item">
+      <label for="timeout">Time Out:</label>
+      <input type="time" id="timeout" name="timeout">
+    </div>
+  </div>
 
   <form id="liquidationForm">
     <table id="travelTable">
