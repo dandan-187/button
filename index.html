@@ -79,31 +79,23 @@
       background-color: #f57c00;
     }
 
-    .check-mark {
-      display: none;
-      color: green;
-      font-size: 18px;
-    }
-
-    .uploaded-info {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      margin-top: 5px;
-    }
-
-    .uploaded-info img {
-      display: none !important;
-    }
-
     input[type="file"] {
       display: none;
     }
 
-    .green-bg {
+    .green-btn {
       background-color: #4CAF50 !important;
       color: white;
+    }
+
+    .uploaded-info {
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .uploaded-img {
+      display: none;
     }
 
     .fullscreen-img {
@@ -113,7 +105,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -183,9 +175,8 @@
           <td>
             <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
             <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
-            <span class="check-mark">&#10003;</span>
             <div class="uploaded-info">
-              <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+              <button type="button" class="green-btn done-btn" onclick="showFullScreen(this)">Done!</button>
               <img src="" alt="Uploaded Ticket" class="uploaded-img">
             </div>
           </td>
@@ -205,7 +196,7 @@
   <button class="close-btn" onclick="closeFullScreen()">X</button>
   <img src="" alt="Fullscreen Image" id="fullscreenImage">
   <div class="fullscreen-controls">
-    <button onclick="deleteImage(fullscreenImage.dataset.ref)">Delete</button>
+    <button onclick="deleteImage()">Delete</button>
     <button onclick="triggerUploadFromFullscreen()">Upload New</button>
   </div>
 </div>
@@ -224,9 +215,8 @@
       <td>
         <button type="button" class="upload-btn" onclick="triggerUpload(this)">Upload Ticket</button>
         <input type="file" accept="image/*" onchange="handleFileUpload(this)" class="file-input">
-        <span class="check-mark">&#10003;</span>
         <div class="uploaded-info">
-          <button type="button" class="done-btn" onclick="showFullScreen(this)">Done!</button>
+          <button type="button" class="green-btn done-btn" onclick="showFullScreen(this)">Done!</button>
           <img src="" alt="Uploaded Ticket" class="uploaded-img">
         </div>
       </td>
@@ -246,7 +236,6 @@
 
   function handleFileUpload(input) {
     const row = input.closest("tr");
-    const checkMark = row.querySelector(".check-mark");
     const uploadedInfo = row.querySelector(".uploaded-info");
     const uploadedImg = row.querySelector(".uploaded-img");
     const uploadBtn = row.querySelector(".upload-btn");
@@ -258,10 +247,8 @@
     };
     reader.readAsDataURL(file);
 
-    checkMark.style.display = 'inline';
     uploadedInfo.style.display = 'flex';
-    uploadBtn.classList.add("green-bg");
-    uploadBtn.innerText = "Done!";
+    uploadBtn.style.display = 'none';
   }
 
   let currentImageRef = null;
@@ -274,8 +261,6 @@
     const fullscreenImage = document.getElementById("fullscreenImage");
 
     fullscreenImage.src = uploadedImg.src;
-    fullscreenImage.dataset.ref = uploadedImg;
-
     currentImageRef = uploadedImg;
     fullscreenImg.style.display = "flex";
   }
@@ -289,16 +274,13 @@
     if (!currentImageRef) return;
 
     const row = currentImageRef.closest("tr");
-    const checkMark = row.querySelector(".check-mark");
     const uploadedInfo = row.querySelector(".uploaded-info");
     const uploadBtn = row.querySelector(".upload-btn");
     const fileInput = row.querySelector(".file-input");
 
     uploadedInfo.style.display = 'none';
-    checkMark.style.display = 'none';
     currentImageRef.src = "";
-    uploadBtn.classList.remove("green-bg");
-    uploadBtn.innerText = "Upload Ticket";
+    uploadBtn.style.display = 'inline-block';
     fileInput.value = "";
 
     closeFullScreen();
